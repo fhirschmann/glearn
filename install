@@ -23,9 +23,9 @@ echo "Installing glearn..."
 # Clone or pull
 if [ -d "$INSTALL_DIR" ]; then
     echo "glearn already exists. Pulling latest changes..."
-    git -C "$INSTALL_DIR" --ff-only pull
+    git -C "$INSTALL_DIR" pull --ff-only
 else
-    git --quiet --depth 1 clone "$REPO_URL" "$INSTALL_DIR"
+    git clone --quiet --depth 1 "$REPO_URL" "$INSTALL_DIR"
 fi
 
 # Export PATH for current session
