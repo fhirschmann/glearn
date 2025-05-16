@@ -1,5 +1,5 @@
 #!/bin/bash
-# # Copyright (c) 2025 Fabian Hirschmann
+# Copyright (c) 2025 Fabian Hirschmann
 #
 # Clones the repo to ~/.glearn, adds it to PATH, and makes it usable immediately.
 
@@ -23,9 +23,9 @@ echo "Installing glearn..."
 # Clone or pull
 if [ -d "$INSTALL_DIR" ]; then
     echo "glearn already exists. Pulling latest changes..."
-    git -C "$INSTALL_DIR" --depth 1 --ff-only pull
+    git -C "$INSTALL_DIR" --quiet --ff-only pull
 else
-    git clone "$REPO_URL" "$INSTALL_DIR"
+    git --quiet --depth 1 clone "$REPO_URL" "$INSTALL_DIR"
 fi
 
 # Export PATH for current session
