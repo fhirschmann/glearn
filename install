@@ -1,0 +1,43 @@
+#!/bin/bash
+# # Copyright (c) 2025 Fabian Hirschmann
+#
+# Clones the repo to ~/.glearn, adds it to PATH, and makes it usable immediately.
+
+INSTALL_DIR="$HOME/.glearn"
+REPO_URL="https://github.com/fhirschmann/glearn.git"
+BASHRC="$HOME/.bashrc"
+
+if [ -z $CLOUD_SHELL ]; then
+    echo "🛑 Please run this script in Cloud Shell only."
+    return 1
+fi
+
+if [ "${BASH_SOURCE[0]}" == "$0" ]; then
+    echo "🛑 This script is not sourced -- please source it."
+    echo "Example: source <(curl -s https://raw.githubusercontent.com/fhirschmann/glearn/main/install)"
+    exit 1
+fi
+
+echo "Installing glearn..."
+
+# Clone or pull
+if [ -d "$INSTALL_DIR" ]; then
+    echo "glearn already exists. Pulling latest changes..."
+    git -C "$INSTALL_DIR" --depth 1 --ff-only pull
+else
+    git clone "$REPO_URL" "$INSTALL_DIR"
+fi
+
+# Export PATH for current session
+if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+    export PATH="$INSTALL_DIR:$PATH"
+    echo "Temporarily added glearn to PATH for this session."
+fi
+
+# Persist in .bashrc
+if ! grep -Fxq 'export PATH="$HOME/.glearn:$PATH"' "$BASHRC"; then
+    echo 'export PATH="$HOME/.glearn:$PATH"' >> "$BASHRC"
+    echo "Persisted PATH update to $BASHRC"
+fi
+
+echo "✅ Installation complete. You can now run: glearn"
